@@ -69,7 +69,8 @@ def algochooser(numbers,paint,label_access,label_comparison,something):
 
     elif something=="gnome sort":
         label_access.configure(text="array access:" + str(ac))
-        gnomesort(numbers,paint,label_access)
+        label_comparison.configure(text="comparison:0")
+        gnomesort(numbers,paint,label_access,label_comparison)
         paint(numbers, ["green" for x in numbers])
         ac,cmp=0,0
     elif something=="odd-even sort":
@@ -86,20 +87,21 @@ def bubblesort(number,paint,label_access,label_comparison):
     colors=[]
     for i in range(len(number)-1):
         for j in range(len(number)-1-i):
-            swapped=False
+            # swapped=False
             if(number[j]>number[j+1]):
-                swapped=True
+                # swapped=True
                 number[j],number[j + 1]=number[j+1],number[j]
-            # --------------------------------------------
+                ac+=4
             cmp += 1
-            ac += 6
+            ac += 2
+            # --------------------------------------------
             colors=["#cc0000"if x==number[j] or x==number[j+1] else"#aaaaaa" for x in number]
             paint(number,colors)
             label_access.configure(text="array access:"+str(ac))
             label_comparison.configure(text="comparison:"+str(cmp))
             # ---------------------------------------------
-        if not swapped:
-            break
+        # if not swapped:
+        #     break
 
 def selectionsort(number,paint,label_access,label_comparison):
 
@@ -109,9 +111,9 @@ def selectionsort(number,paint,label_access,label_comparison):
         for j in range(i+1,len(number)):
             if (number[i]>number[j]):
                 number[i],number[j]=number[j],number[i]
-
+                ac+=4
             # -----------------------------------------------
-            ac += 6
+            ac += 2
             cmp += 1
             colors=["#cc0000"if  x==number[j] else "#aaaaaa" if x!=number[i] else "green" for x in number]
             paint(number,colors)
@@ -130,7 +132,7 @@ def insertionsort(number,paint,label_access,label_comparison):
         while(y>=0 and number[y]>current):
             number[y+1]=number[y]
             y-=1
-            ac+=3
+            ac+=2
             cmp+=1
             #----------------------------------------------------------
             for gh in range(len(number)):
@@ -146,7 +148,7 @@ def insertionsort(number,paint,label_access,label_comparison):
             label_comparison.configure(text="comparison:" + str(cmp))
             #------------------------------------------------------------
         number[y+1]=current
-        ac+=1
+        ac+=2
         #-----------------------------------------------------------
         label_access.configure(text="array access:" + str(ac))
         label_comparison.configure(text="comparison:" + str(cmp))
@@ -231,12 +233,12 @@ def heapify(number,limit,parent,paint,label_access,label_comparison):
 
     if(left<limit and number[left]>number[largest]):
         largest=left
-        ac+=2
-        cmp+=1
+    ac+=2
+    cmp+=1
     if(right<limit and number[right]>number[largest]):
         largest=right
-        ac+=2
-        cmp+=1
+    ac+=2
+    cmp+=1
     if(largest!=parent):
         number[largest],number[parent]=number[parent],number[largest]
         ac+=4
@@ -244,10 +246,10 @@ def heapify(number,limit,parent,paint,label_access,label_comparison):
         for i in range(len(number)):
             if number[i]==number[parent]:
                 colors.append("yellow")
-                ac+=2
+
             elif number[i]==number[left] or number[i]==number[right]:
                 colors.append("#cc0000")
-                ac+=4
+
             else:
                 if i==limit:
                     colors.append("green")
@@ -290,8 +292,9 @@ def partition(number,low,high,paint,label_access,label_comparison):
             number[i],number[tracker]=number[tracker],number[i]
             tracker+=1
             color=[]
-            ac+=5
-            cmp+=1
+            ac+=4
+        cmp+=1
+        ac+=1
         #---------------------------------------------------------
         for i in range(len(number)):
             if i==low or i==high-1:
@@ -321,20 +324,26 @@ def shellsort(number,paint,label_access,label_comparison):
         for x_sort in range(gap,length):#loop srart from gap bcoz we are using j=x_sort-gap
 
             j=x_sort-gap #initial j will be 0 x_sort=gap so j=x_sort-x_sort=0
+            #---------------------------------------------------------
             paint(number, ["#cc0000" if xy == j + gap or xy == j else "#aaaaaa" for xy in range(len(number))])
+            #---------------------------------------------------------
             while j>=0:#if you swap element then go back by gap(j-=gap) and swap and if you haven't swapped then break the loop so you can go forward
                 if(number[j+gap]<number[j]):
                     number[j + gap],number[j]=number[j],number[j + gap]
-                    ac+=6
-                    cmp+=1
+                    ac+=4
+
                 else:
                     break
+                cmp += 1
+                ac += 2
+                #--------------------------------------------------------------------------------------------------
                 paint(number, ["#cc0000" if xy == j + gap or xy == j else "#aaaaaa" for xy in range(len(number))])
                 label_access.configure(text="array access:" + str(ac))
                 label_comparison.configure(text="comparison:" + str(cmp))
+                #--------------------------------------------------------------------------------------------------
                 j-=gap
         gap//=2
-ac=0
+
 def countsort(number,exp,paint,label_access):
     global  ac
     count=[0]*10
@@ -352,7 +361,7 @@ def countsort(number,exp,paint,label_access):
 
         ac+=3
         label_access.configure(text="array access:" + str(ac))
-    #time.sleep(0.2)
+
     for w in range(len(temp)):
         number[w]=temp[w]
         ac+=1
@@ -366,10 +375,10 @@ def radixsort(number,paint,label_access):
     exp=1
     while(maximum//exp>=1):
         countsort(number,exp,paint,label_access)
-        #paint(number, ["#aaaaaa" for h in number])
-        #time.sleep(0.1)
+        paint(number, ["#aaaaaa" for h in number])
+        time.sleep(0.1)
         exp*=10
-ac=0
+
 def cocktailshakersort(number,paint,label_access,label_comparison):
     first,last=0,len(number)
     swapped=True
@@ -380,9 +389,12 @@ def cocktailshakersort(number,paint,label_access,label_comparison):
         for x in range(first,last-1):
             if number[x]>number[x+1]:
                 number[x],number[x + 1]=number[x+1],number[x]
-                ac+=6
-                cmp+=1
+                ac+=4
+
                 swapped=True
+            ac+=2
+            cmp += 1
+            #--------------------------------------------------------
             colors=[]
             for gh in range(len(number)):
                 if number[gh]==number[x] or number[gh]==number[x+1]:
@@ -392,6 +404,7 @@ def cocktailshakersort(number,paint,label_access,label_comparison):
             paint(number,colors)
             label_access.configure(text="array access:" + str(ac))
             label_comparison.configure(text="comparison:" + str(cmp))
+            #--------------------------------------------------------
         if not swapped:
             break
         last-=1
@@ -399,8 +412,10 @@ def cocktailshakersort(number,paint,label_access,label_comparison):
             if number[y+1]<number[y]:
                 number[y + 1],number[y]=number[y],number[y+1]
                 swapped=True
-                ac+=6
-                cmp+=1
+                ac+=4
+            cmp+=1
+            ac+=2
+            #-----------------------------------------------------------------
             colors=[]
             for gh in range(len(number)):
                 if number[gh] == number[y] or number[gh] == number[y + 1]:
@@ -410,38 +425,48 @@ def cocktailshakersort(number,paint,label_access,label_comparison):
             paint(number,colors)
             label_access.configure(text="array access:" + str(ac))
             label_comparison.configure(text="comparison:" + str(cmp))
+            #------------------------------------------------------------------
         first+=1
 
-def gnomesort(number,paint,label_access):
+def gnomesort(number,paint,label_access,label_comparison):
     i,length=0,len(number)
+    global ac,cmp
     colors=[]
     while(i<length):
         if i==0:
             i+=1
         if(number[i]>=number[i-1]):
 
-            
+            # --------------------------------
             for gh in number:
-            	# print(gh)
 	            if(gh==number[i]):
 	            	colors.append("#cc0000")
 	            else:
 	            	colors.append("#aaaaaa")
             paint(number,colors)
+            label_access.configure(text="array access:"+str(ac))
+            label_comparison.configure(text="comparison:"+str(cmp))
             colors=[]
+            label_access
+            #---------------------------------
             i += 1
         else:
             number[i],number[i-1]=number[i-1],number[i]
+            ac+=4
+            #-----------------------------------
             for gh in number:
 	            if(gh==number[i]):
 	            	colors.append("#cc0000")
 	            else:
 	            	colors.append("#aaaaaa")
             paint(number,colors)
+            label_access.configure(text="array access:" + str(ac))
+            label_comparison.configure(text="comparison:" + str(cmp))
             colors=[]
+            #-----------------------------------
             i -= 1
-    
-ac=0
+        ac+=2
+
 def oddevensort(number,paint,label_access,label_comparison):
     global ac,cmp
     length=len(number)
@@ -452,20 +477,26 @@ def oddevensort(number,paint,label_access,label_comparison):
         for x in range(0,length-1,2):
             if number[x]>number[x+1]:
                 number[x],number[x+1]=number[x+1],number[x]
-                ac+=1
+                ac+=4
                 cmp+=1
                 is_sort=False
+                #--------------------------------------------------------------------------------
                 colors=[ "#cc0000" if v==x or v==x+1 else "#aaaaaa" for v in range(len(number))]
                 paint(number,colors)
                 label_access.configure(text="array access:" + str(ac))
                 label_comparison.configure(text="comparison:" + str(cmp))
+                #-------------------------------------------------------------------------------
+            ac+=2
         for y in range(1,length-1,2):
             if number[y]>number[y+1]:
                 number[y],number[y+1]=number[y+1],number[y]
-                ac+=6
+                ac+=4
                 cmp+=1
                 is_sort=False
+                #---------------------------------------------------------------------------------------
                 colors = ["#cc0000" if v == y or v == y + 1 else "#aaaaaa" for v in range(len(number))]
                 paint(number, colors)
                 label_access.configure(text="array access:" + str(ac))
                 label_comparison.configure(text="comparison:" + str(cmp))
+                #----------------------------------------------------------------------------------------
+            ac+=2
