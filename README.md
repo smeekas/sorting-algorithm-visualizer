@@ -12,7 +12,9 @@ HEAP | SHELL | RADIX | ODD-EVEN | GNOME | COCKTAIL-SHAKER |
 
  
 bar drawing demo-
+
 <img src="https://user-images.githubusercontent.com/63276642/97260044-2570f500-1842-11eb-8d2a-561f6a06b8ff.gif" alt="demo_1" width="500">
 
 color drawing demo-
+
 <img src="https://user-images.githubusercontent.com/63276642/97260050-299d1280-1842-11eb-9508-e0a9c39bee9b.gif" alt="demo_2" width="500">
